@@ -3,25 +3,23 @@ angular.module('video-player')
   // TODO
   this.search = function(query, callback) {
     console.log('searched ', query);
-    console.log('callback', callback);
     var data = {
+      key: YOUTUBE_API_KEY,
       part: 'snippet',
       q: query,
       maxResults: 5,
-      key: 'AIzaSyCe9OjRxypAljXosJDrcwWT-bcJcn6Y0GQ',
-      chart: 'mostPopular',
-      type: 'video'
+      chart: 'mostPopular'
     };
     
-    $http.get('https://www.googleapis.com/youtube/v3/videos',
-      {
-        params: data,
-        type: 'json'
-      }).then((response) => {
-        callback(response.data.items);
-        console.log('succeeded: ', response);
-      }, (response) => {
-        console.log('failed: ', response);
-      });
+    $http({
+      url: 'https://www.googleapis.com/youtube/v3/search',
+      method: 'GET',
+      params: data
+    }).then((response) => {
+      callback(response.data.items);
+      console.log('succeeded: ', response);
+    }, (response) => {
+      console.log('failed: ', response);
+    });
   };
 });
